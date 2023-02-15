@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { deskree } from "@/deskree";
 import { ref } from "vue";
+import { deskree } from "@/deskree";
+import type { UsersDataType } from "@/interfaces/deskree-types.interface";
 
 const avatarFile = ref<File | null | undefined>(null);
 
@@ -16,26 +17,13 @@ function inputClick() {
   fileInput?.click();
 }
 
-function handleFileUpload(event: Event | any) {
+async function handleFileUpload(event: Event | any) {
   const target = event.target as HTMLInputElement;
   avatarFile.value = target.files?.item(0);
-  const image = transformImageToBase64(
-    avatarFile.value ? avatarFile.value : null
-  );
-  if (image) return (registerUserObject.value.avatar = image);
+  await transformImageToBase64(avatarFile.value ? avatarFile.value : null);
 }
 
-async function createNewUser() {
-  try {
-    deskree.database().from("tweets").create({
-      image: registerUserObject.value.avatar,
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function transformImageToBase64(file: File | null) {
+async function transformImageToBase64(file: File | null) {
   try {
     if (file === null) return null;
     if (file === undefined) return null;
@@ -43,13 +31,34 @@ function transformImageToBase64(file: File | null) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      return reader.result;
+      registerUserObject.value.avatar = reader.result as string;
     };
     reader.onerror = (error) => {
       console.log("Error: ", error);
     };
   } catch (error) {
     console.error(error);
+  }
+}
+async function registerUser() {
+  try {
+    const signup = await deskree
+      .auth()
+      .signUpEmail(
+        registerUserObject.value.email,
+        registerUserObject.value.password
+      );
+    const user: { data: UsersDataType } = await deskree
+      .database()
+      .from("users")
+      .update(signup.data.uid, {
+        username: registerUserObject.value.username,
+        avatar: registerUserObject.value.avatar,
+      });
+    console.log(user);
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
 }
 </script>
@@ -69,7 +78,7 @@ function transformImageToBase64(file: File | null) {
       </p>
       <form
         class="flex flex-col gap-4 w-full"
-        @submit.prevent="createNewUser()"
+        @submit.prevent="registerUser()"
       >
         <input
           v-model="registerUserObject.username"

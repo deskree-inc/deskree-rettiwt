@@ -6,4 +6,6 @@ const deskree = createClient({
   axios: axios,
 });
 
+console.log(import.meta.env.VITE_APP_DESKREE_PROJECT_ID);
+
 export { deskree };

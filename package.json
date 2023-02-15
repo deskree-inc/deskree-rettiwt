@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
+    "deskree-interfaces": "tsc ./src/deskree-interfaces.ts --outDir ./dist && node ./dist/deskree-interfaces.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
@@ -19,7 +20,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
-    "@types/node": "^18.11.12",
+    "@types/node": "^18.13.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
