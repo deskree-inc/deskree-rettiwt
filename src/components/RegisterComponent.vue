@@ -2,6 +2,9 @@
 import { ref } from "vue";
 import { deskree } from "@/deskree";
 import type { UsersDataType } from "@/interfaces/deskree-types.interface";
+import { useUserStore } from "@/stores/user";
+import { useTokenStore } from "@/stores/token";
+import { useRouter } from "vue-router";
 
 const avatarFile = ref<File | null | undefined>(null);
 
@@ -12,51 +15,85 @@ const registerUserObject = ref({
   avatar: "",
 });
 
+const isLoading = ref(false);
+
 function inputClick() {
-  const fileInput: any = document.getElementById("fileInput");
+  const fileInput: HTMLElement | null = document.getElementById("fileInput");
   fileInput?.click();
 }
 
 async function handleFileUpload(event: Event | any) {
   const target = event.target as HTMLInputElement;
   avatarFile.value = target.files?.item(0);
-  await transformImageToBase64(avatarFile.value ? avatarFile.value : null);
+  const base64 = await convertFileToBase64(avatarFile.value as File);
+  registerUserObject.value.avatar = base64 as string;
 }
 
-async function transformImageToBase64(file: File | null) {
-  try {
-    if (file === null) return null;
-    if (file === undefined) return null;
+function convertFileToBase64(file: File): Promise<string | ArrayBuffer | null> {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      registerUserObject.value.avatar = reader.result as string;
+    fileReader.onload = () => {
+      resolve(fileReader.result);
     };
-    reader.onerror = (error) => {
-      console.log("Error: ", error);
+
+    fileReader.onerror = (error) => {
+      reject(error);
     };
-  } catch (error) {
-    console.error(error);
+  });
+}
+
+async function handleRegistration() {
+  try {
+    isLoading.value = true;
+    await registerUser();
+    await getToken();
+    useRouter().push("/home");
+  } catch (e) {
+    isLoading.value = false;
+    console.error(e);
+    throw e;
+  } finally {
+    isLoading.value = false;
   }
 }
+
 async function registerUser() {
   try {
+    isLoading.value = true;
     const signup = await deskree
       .auth()
       .signUpEmail(
         registerUserObject.value.email,
         registerUserObject.value.password
       );
-    const user: { data: UsersDataType } = await deskree
-      .database()
-      .from("users")
-      .update(signup.data.uid, {
+    const user: { data: { data: UsersDataType }; status: string } =
+      await deskree.database().from("users").update(signup.data.uid, {
         username: registerUserObject.value.username,
         avatar: registerUserObject.value.avatar,
       });
-    console.log(user);
+    useUserStore().setUser(user.data.data);
   } catch (e) {
+    isLoading.value = false;
+    console.error(e);
+    throw e;
+  }
+}
+
+async function getToken() {
+  try {
+    isLoading.value = true;
+    const token = await deskree
+      .auth()
+      .signInEmail(
+        registerUserObject.value.email,
+        registerUserObject.value.password
+      );
+    console.log(token);
+    useTokenStore().setToken(token.data.idToken, token.data.refreshToken);
+  } catch (e) {
+    isLoading.value = false;
     console.error(e);
     throw e;
   }
@@ -64,9 +101,11 @@ async function registerUser() {
 </script>
 
 <template>
-  <div class="h-screen w-screen bg-background flex justify-center">
+  <div
+    class="h-screen w-screen bg-background py-7 px-12 mobile:py-0 mobile:px-0 relative overflow-hidden"
+  >
     <div
-      class="flex flex-col items-start justify-center h-screen w-1/4 mobile:w-full mobile:px-4"
+      class="h-screen w-1/4 mobile:w-full mobile:px-4 max-w-md my-36 mx-auto mobile:my-0 mobile:mx-0 mobile:flex mobile:flex-col mobile:justify-center"
     >
       <div class="flex items-center justify-center gap-2 mb-8">
         <img src="@/assets/logo.svg" alt="logo" class="w-11" />
@@ -78,26 +117,32 @@ async function registerUser() {
       </p>
       <form
         class="flex flex-col gap-4 w-full"
-        @submit.prevent="registerUser()"
+        @submit.prevent="handleRegistration()"
       >
         <input
           v-model="registerUserObject.username"
           type="text"
           placeholder="Username"
+          required
           class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
         <input
           v-model="registerUserObject.email"
           type="email"
           placeholder="Email Address"
+          required
           class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
         <input
           v-model="registerUserObject.password"
           type="password"
           placeholder="Password"
+          required
           class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
+        <label class="text-[#8e8e8e] text-xxs"
+          >Must be between 6 to 10 characters long.</label
+        >
         <div
           v-if="avatarFile === null"
           class="flex justify-start items-center w-full relative gap-2 px-4 py-2 rounded-lg border border-[#0075ff] border-dashed cursor-pointer hover:bg-background-secondary focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
@@ -156,13 +201,11 @@ async function registerUser() {
         </div>
         <button
           type="submit"
-          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
+          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out disabled:opacity-50 disabled:hover:transparent"
+          :disabled="isLoading"
         >
           Register
         </button>
-        <label class="text-[#8e8e8e] text-xxs"
-          >Must be between 6 to 10 characters long.</label
-        >
       </form>
       <!--Divider-->
       <div class="w-full h-0.5 my-7 bg-secondary"></div>

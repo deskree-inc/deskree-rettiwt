@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { deskree } from "@/deskree";
-import { UsersDataType } from "@/interfaces/deskree-types.interface";
+import type { UsersDataType } from "@/interfaces/deskree-types.interface";
 
 const loginUserObject = ref({
   email: "",
   password: "",
 });
+
 async function loginUser() {
   try {
     const login = await deskree
@@ -16,19 +17,19 @@ async function loginUser() {
       .database()
       .from("users")
       .get(login.data.uid);
-    console.log(user);
   } catch (e) {
     console.error(e);
     throw e;
   }
 }
-
 </script>
 
 <template>
-  <div class="h-screen w-screen bg-background flex justify-center">
+  <div
+    class="h-screen w-screen bg-background py-7 px-12 mobile:py-0 mobile:px-0 relative overflow-hidden"
+  >
     <div
-      class="flex flex-col items-start justify-center h-screen w-1/4 mobile:w-full mobile:px-4"
+      class="h-screen w-1/4 mobile:w-full mobile:px-4 max-w-md my-36 mx-auto mobile:my-0 mobile:mx-0 mobile:flex mobile:flex-col mobile:justify-center"
     >
       <div class="flex items-center justify-center gap-2 mb-8">
         <img src="@/assets/logo.svg" alt="logo" class="w-11" />
@@ -37,7 +38,7 @@ async function loginUser() {
       <p class="font-sans text-white text-xs font-normal mb-6">
         Welcome to Rettiwt. <br />Please provide the credentials below to login.
       </p>
-      <form class="flex flex-col gap-4 w-full" @submit.prevent="">
+      <form class="flex flex-col gap-4 w-full" @submit.prevent="loginUser()">
         <input
           v-model="loginUserObject.email"
           type="email"
@@ -57,7 +58,6 @@ async function loginUser() {
           Login
         </button>
       </form>
-      <!--Divider-->
       <div class="w-full h-0.5 my-7 bg-secondary"></div>
       <p class="font-sans text-white text-xs font-normal mb-4">
         If you are new to the platform, please register.
