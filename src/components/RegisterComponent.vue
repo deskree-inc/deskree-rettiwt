@@ -1,14 +1,57 @@
 <script setup lang="ts">
+import { deskree } from "@/deskree";
 import { ref } from "vue";
 
-const avatarFile = ref<File | null>(null);
+const avatarFile = ref<File | null | undefined>(null);
 
 const registerUserObject = ref({
   username: "",
   email: "",
   password: "",
-  avatar: avatarFile.value,
+  avatar: "",
 });
+
+function inputClick() {
+  const fileInput: any = document.getElementById("fileInput");
+  fileInput?.click();
+}
+
+function handleFileUpload(event: Event | any) {
+  const target = event.target as HTMLInputElement;
+  avatarFile.value = target.files?.item(0);
+  const image = transformImageToBase64(
+    avatarFile.value ? avatarFile.value : null
+  );
+  if (image) return (registerUserObject.value.avatar = image);
+}
+
+async function createNewUser() {
+  try {
+    deskree.database().from("tweets").create({
+      image: registerUserObject.value.avatar,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function transformImageToBase64(file: File | null) {
+  try {
+    if (file === null) return null;
+    if (file === undefined) return null;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      return reader.result;
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+    };
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -24,7 +67,10 @@ const registerUserObject = ref({
         Welcome to Rettiwt. <br />Please provide the credentials below to
         register.
       </p>
-      <form class="flex flex-col gap-4 w-full" @submit.prevent="">
+      <form
+        class="flex flex-col gap-4 w-full"
+        @submit.prevent="createNewUser()"
+      >
         <input
           v-model="registerUserObject.username"
           type="text"
@@ -46,7 +92,7 @@ const registerUserObject = ref({
         <div
           v-if="avatarFile === null"
           class="flex justify-start items-center w-full relative gap-2 px-4 py-2 rounded-lg border border-[#0075ff] border-dashed cursor-pointer hover:bg-background-secondary focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
-          @click="$refs.fileInput?.click(avatarFile)"
+          @click="inputClick()"
         >
           <svg
             width="10"
@@ -70,8 +116,8 @@ const registerUserObject = ref({
             Add an avatar for your profile
           </p>
           <input
-            @change="avatarFile = $event.target?.files[0]"
-            ref="fileInput"
+            @change="handleFileUpload"
+            id="fileInput"
             type="file"
             class="hidden"
             accept="image/png, image/gif, image/jpeg, image/ico, image/jpg"
@@ -83,17 +129,17 @@ const registerUserObject = ref({
         >
           <div class="flex items-center justify-between w-full">
             <p class="text-xs text-left text-white">
-              {{ avatarFile.name }}
+              {{ avatarFile?.name }}
             </p>
             <span
               class="cursor-pointer text-primary text-xs hover:text-primary-hover transition-colors duration-200 ease-in-out"
-              @click="$refs.fileInput?.click()"
+              @click="inputClick()"
               >Change</span
             >
           </div>
           <input
-            @change="avatarFile = $event.target?.files[0]"
-            ref="fileInput"
+            @change="handleFileUpload"
+            id="fileInput"
             type="file"
             class="hidden"
             accept="image/png, image/gif, image/jpeg, image/ico, image/jpg"
