@@ -8,7 +8,7 @@
         <h4 class="font-sans font-bold text-text">rettiwt</h4>
       </div>
       <div
-        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[65px] gap-4"
+        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[70px] gap-4"
       >
         <div class="flex items-center gap-3">
           <img
