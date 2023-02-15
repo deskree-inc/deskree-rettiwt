@@ -14,9 +14,9 @@
         placeholder="What's on your mind?"
       />
 
-      <div class="w-48">
+      <div class="w-48 min-w-fit">
         <button
-          class="bg-primary py-1.5 px-4 rounded-3xl hover:bg-primary-hover transition-colors duration-200 ease-in-out"
+          class="bg-primary py-1.5 px-4 rounded-3xl hover:bg-primary-hover transition-colors duration-200 ease-in-out mobile:py-1 mobile:px-2"
         >
           Share Tweet
         </button>

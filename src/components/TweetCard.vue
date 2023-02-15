@@ -1,4 +1,26 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+  tweet: {
+    id: number;
+    name: string;
+    username: string;
+    avatar: string;
+    time: string;
+    date: string;
+    message: string;
+    factCheck: {
+      passed: boolean | null;
+      text: string;
+    };
+  };
+}>();
+
+const checkmarkPath = (passed: boolean | null) => {
+  if (passed === null) return "/img/checkmark/gray-checkmark.svg";
+  if (passed) return "/img/checkmark/green-checkmark.svg";
+  return "/img/checkmark/red-checkmark.svg";
+};
+</script>
 
 <template>
   <div
@@ -7,45 +29,54 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img
-          src="https://i.pravatar.cc/32"
+          :src="props.tweet.avatar"
           alt="avatar"
           class="rounded-full w-8 h-8"
         />
         <div class="flex flex-col">
           <h4 class="font-normal font-sans text-xs text-text">
-            Wellington Trollking
+            {{ props.tweet.username }}
           </h4>
-          <span class="font-normal font-sans text-xxs text-color-tertiary"
-            >@wellthetroll</span
-          >
+          <span class="font-normal font-sans text-xxs text-color-tertiary">{{
+            props.tweet.username
+          }}</span>
         </div>
       </div>
       <div class="flex items-center gap-1">
-        <span class="font-normal font-sans text-xxs text-color-tertiary"
-          >2:23 pm</span
-        >
-        <span class="font-normal font-sans text-xxs text-color-tertiary"
-          >Feb 14 2023</span
-        >
+        <span class="font-normal font-sans text-xxs text-color-tertiary">{{
+          props.tweet.time
+        }}</span>
+        <span class="font-normal font-sans text-xxs text-color-tertiary">{{
+          props.tweet.date
+        }}</span>
       </div>
     </div>
     <p class="font-normal font-sans text-base text-text">
-      My forehead is so big from all the disrespectful thoughts that I keep to
-      myself.
+      {{ props.tweet.message }}
     </p>
     <div class="w-full">
       <div class="w-full h-0.5 bg-secondary"></div>
       <div class="flex flex-col gap-1 mt-4">
         <div class="flex items-center gap-2">
-          <img src="@/assets/green-checkmark.svg" alt="Green Checkmark" />
-          <span class="font-semibold font-sans text-xxs text-color-tertiary"
-            >Fact Check Passed</span
+          <img
+            :src="checkmarkPath(props.tweet.factCheck.passed)"
+            alt="Green Checkmark"
+          />
+          <span
+            v-if="props.tweet.factCheck.passed !== null"
+            class="font-semibold font-sans text-xxs text-color-tertiary"
+            >Fact Check
+            {{ props.tweet.factCheck.passed ? "Passed" : "Failed" }}</span
           >
+          <span
+            v-else
+            class="font-semibold font-sans text-xxs text-color-tertiary"
+            >Fact Check Ineligible
+          </span>
         </div>
-        <span class="font-semibold font-sans text-xxs text-color-tertiary"
-          >It appears that it is true. Well, what can we say? The bigger the
-          better, right?</span
-        >
+        <span class="font-semibold font-sans text-xxs text-color-tertiary">{{
+          props.tweet.factCheck.text
+        }}</span>
       </div>
     </div>
   </div>
