@@ -14,7 +14,7 @@ import MainTweets from "@/components/MainTweets.vue";
         <div class="max-w-[160px] mr-6">
           <div class="flex items-center justify-center gap-2">
             <img src="@/assets/logo.svg" alt="logo" />
-            <h4 class="font-sans font-bold">rettiwt</h4>
+            <h4 class="font-sans font-bold text-text">rettiwt</h4>
           </div>
           <div
             class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[65.5px] gap-4"

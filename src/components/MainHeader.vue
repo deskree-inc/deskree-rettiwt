@@ -14,11 +14,6 @@
         placeholder="What's on your mind?"
       />
 
-      <!-- <input
-        type="text"
-        class="w-full ml-2 bg-transparent outline-none placeholder:text-secondary break-words"
-        placeholder="What's on your mind?"
-      /> -->
       <div class="w-48">
         <button
           class="bg-primary py-1.5 px-4 rounded-3xl hover:bg-primary-hover transition-colors duration-200 ease-in-out"
