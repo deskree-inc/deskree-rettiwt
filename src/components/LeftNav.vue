@@ -1,14 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="col-span-1 h-screen mobile:hidden w-full flex justify-end pt-2">
+  <div class="col-span-1 h-screen mobile:hidden w-full flex justify-end pt-1">
     <div class="max-w-[160px] mr-6">
       <div class="flex items-center justify-center gap-2">
         <img src="@/assets/logo.svg" alt="logo" />
         <h4 class="font-sans font-bold text-text">rettiwt</h4>
       </div>
       <div
-        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[65.5px] gap-4"
+        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[65px] gap-4"
       >
         <div class="flex items-center gap-3">
           <img
