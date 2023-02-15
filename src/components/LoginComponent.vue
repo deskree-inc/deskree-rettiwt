@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { deskree } from "@/deskree";
+import { UsersDataType } from "@/interfaces/deskree-types.interface";
 
 const loginUserObject = ref({
   email: "",
   password: "",
 });
+async function loginUser() {
+  try {
+    const login = await deskree
+      .auth()
+      .signInEmail(loginUserObject.value.email, loginUserObject.value.password);
+    const user: { data: UsersDataType } = await deskree
+      .database()
+      .from("users")
+      .get(login.data.uid);
+    console.log(user);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
 </script>
 
 <template>
