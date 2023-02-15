@@ -9,7 +9,7 @@ module.exports = {
         secondary: "rgba(255, 255, 255, 0.1)",
         background: "#161616",
         "background-secondary": "#292929",
-        text: "#FFFFFF",
+        white: "#FFFFFF",
         "color-secondary": "#B0B0B0",
         "color-tertiary": "#888888",
         "small-divider": "rgba(255, 255, 255, 0.05)",

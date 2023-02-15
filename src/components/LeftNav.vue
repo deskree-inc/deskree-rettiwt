@@ -5,7 +5,7 @@
     <div class="max-w-[160px] mr-6">
       <div class="flex items-center justify-center gap-2">
         <img src="@/assets/logo.svg" alt="logo" />
-        <h4 class="font-sans font-bold text-text">rettiwt</h4>
+        <h4 class="font-sans font-bold text-white">rettiwt</h4>
       </div>
       <div
         class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[70px] gap-4"
@@ -17,7 +17,7 @@
             class="rounded-full w-6 h-6"
           />
           <div class="flex flex-col">
-            <h4 class="font-normal font-sans text-sm text-text">Wellington</h4>
+            <h4 class="font-normal font-sans text-sm text-white">Wellington</h4>
             <span class="font-normal font-sans text-xxs text-color-tertiary"
               >@wellthetroll</span
             >
@@ -60,7 +60,7 @@
               />
             </svg>
             <span
-              class="font-sans font-semibold text-xs pt-0.5 text-text group-hover:text-primary transition-colors duration-200 ease-in-out"
+              class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
               >Trending</span
             >
           </nav>
@@ -83,7 +83,7 @@
             </svg>
 
             <span
-              class="font-sans font-semibold text-xs pt-0.5 text-text group-hover:text-primary transition-colors duration-200 ease-in-out"
+              class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
               >Settings</span
             >
           </nav>
@@ -106,7 +106,7 @@
             </svg>
 
             <span
-              class="font-sans font-semibold text-xs pt-0.5 text-text group-hover:text-primary transition-colors duration-200 ease-in-out"
+              class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
               >Logout</span
             >
           </nav>

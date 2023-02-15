@@ -18,9 +18,9 @@ const registerUserObject = ref({
     >
       <div class="flex items-center justify-center gap-2 mb-8">
         <img src="@/assets/logo.svg" alt="logo" class="w-11" />
-        <h4 class="font-sans font-bold text-text text-3xl">rettiwt</h4>
+        <h4 class="font-sans font-bold text-white text-3xl">rettiwt</h4>
       </div>
-      <p class="font-sans text-text text-xs font-normal mb-6">
+      <p class="font-sans text-white text-xs font-normal mb-6">
         Welcome to Rettiwt. <br />Please provide the credentials below to
         register.
       </p>
@@ -29,19 +29,19 @@ const registerUserObject = ref({
           v-model="registerUserObject.username"
           type="text"
           placeholder="Username"
-          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-text focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
+          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
         <input
           v-model="registerUserObject.email"
           type="email"
           placeholder="Email Address"
-          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-text focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
+          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
         <input
           v-model="registerUserObject.password"
           type="password"
           placeholder="Password"
-          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-text focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
+          class="w-full relative gap-2 px-4 py-2 rounded-lg bg-[#292929] text-white focus:outline-none focus:ring-2 focus:ring-primary hover:bg-[#4d4d4d] transition-colors duration-200 ease-in-out"
         />
         <div
           v-if="avatarFile === null"
@@ -101,7 +101,7 @@ const registerUserObject = ref({
         </div>
         <button
           type="submit"
-          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-text hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
+          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
         >
           Register
         </button>
@@ -111,12 +111,12 @@ const registerUserObject = ref({
       </form>
       <!--Divider-->
       <div class="w-full h-0.5 my-7 bg-secondary"></div>
-      <p class="font-sans text-text text-xs font-normal mb-4">
+      <p class="font-sans text-white text-xs font-normal mb-4">
         If you are already a registered user, please login.
       </p>
       <RouterLink to="/login" class="w-full">
         <button
-          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-[#4d4d4d] text-text hover:bg-background-secondary transition-colors duration-200 ease-in-out"
+          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-[#4d4d4d] text-white hover:bg-background-secondary transition-colors duration-200 ease-in-out"
         >
           Go To Login
         </button>

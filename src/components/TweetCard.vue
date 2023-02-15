@@ -34,7 +34,7 @@ const checkmarkPath = (passed: boolean | null) => {
           class="rounded-full w-8 h-8"
         />
         <div class="flex flex-col">
-          <h4 class="font-normal font-sans text-xs text-text">
+          <h4 class="font-normal font-sans text-xs text-white">
             {{ props.tweet.username }}
           </h4>
           <span class="font-normal font-sans text-xxs text-color-tertiary">{{
@@ -51,7 +51,7 @@ const checkmarkPath = (passed: boolean | null) => {
         }}</span>
       </div>
     </div>
-    <p class="font-normal font-sans text-base text-text">
+    <p class="font-normal font-sans text-base text-white">
       {{ props.tweet.message }}
     </p>
     <div class="w-full">
