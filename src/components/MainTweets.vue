@@ -16,6 +16,8 @@ async function getTweets() {
         .from("tweets")
         .get({
           includes: ["author"],
+          "sorted[how]": "desc",
+          "sorted[param]": "createdAt",
         });
     tweets.value = t.data.data;
   } catch (e) {

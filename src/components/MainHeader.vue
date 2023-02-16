@@ -12,12 +12,23 @@ const tweet = ref({
 
 async function createTweet() {
   try {
+    const openai = await deskree.integration("openai").post("/completions", {
+      model: "text-davinci-003",
+      prompt: `Is it true that '${tweet.value.message}'?`,
+      temperature: 0.28,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    });
+    const factMessage = openai.data.choices[0].text;
     await deskree
       .database()
       .from("tweets")
       .create({
-      message: tweet.value.message,
-    });
+        message: tweet.value.message,
+        factMessage,
+      });
     tweet.value.message = "";
     emit("updateTweets");
   } catch (e) {
