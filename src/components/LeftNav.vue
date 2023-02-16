@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useTokenStore } from "@/stores/token";
+import { useUserStore } from "@/stores/user";
+import { computed } from "vue";
+
+const user = computed(() => useUserStore().$state);
+
+const logout = () => {
+  useUserStore().removeUser();
+  useTokenStore().removeToken();
+};
+</script>
 
 <template>
   <div class="col-span-1 h-screen mobile:hidden w-full flex justify-end pt-1">
@@ -8,18 +19,16 @@
         <h4 class="font-sans font-bold text-white">rettiwt</h4>
       </div>
       <div
-        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[70px] gap-4"
+        class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[68px] gap-4"
       >
-        <div class="flex items-center gap-3">
-          <img
-            src="https://i.pravatar.cc/26"
-            alt="avatar"
-            class="rounded-full w-6 h-6"
-          />
+        <div v-if="user.uid && user.email" class="flex items-center gap-3">
+          <img :src="user.avatar" alt="avatar" class="rounded-full w-6 h-6" />
           <div class="flex flex-col">
-            <h4 class="font-normal font-sans text-sm text-white">Wellington</h4>
+            <h4 class="font-normal font-sans text-sm text-white">
+              {{ user.username }}
+            </h4>
             <span class="font-normal font-sans text-xxs text-color-tertiary"
-              >@wellthetroll</span
+              >@{{ user.username }}</span
             >
           </div>
         </div>
@@ -105,8 +114,19 @@
               />
             </svg>
 
+            <RouterLink
+              v-if="user === undefined || user === null || user.email === ''"
+              to="/login"
+            >
+              <span
+                class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
+                >Login</span
+              >
+            </RouterLink>
             <span
+              v-else
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
+              @click="logout()"
               >Logout</span
             >
           </nav>

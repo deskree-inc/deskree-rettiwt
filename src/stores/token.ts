@@ -8,10 +8,22 @@ export const useTokenStore = defineStore("token", {
 
   getters: {
     getToken() {
-      this.token = localStorage.getItem("token") || "";
+      const token = localStorage.getItem("token") || "";
+      if (token !== "") {
+        this.token = token;
+      } else {
+        this.token = "";
+      }
+      return token;
     },
     getRefreshToken() {
-      this.refreshToken = localStorage.getItem("refreshToken") || "";
+      const refreshToken = localStorage.getItem("refreshToken") || "";
+      if (refreshToken !== "") {
+        this.refreshToken = refreshToken;
+      } else {
+        this.refreshToken = "";
+      }
+      return refreshToken;
     },
   },
 
@@ -21,6 +33,13 @@ export const useTokenStore = defineStore("token", {
       this.refreshToken = refreshToken;
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
+    },
+
+    removeToken() {
+      this.token = "";
+      this.refreshToken = "";
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
     },
   },
 });

@@ -14,13 +14,30 @@ export const useUserStore = defineStore("user", {
 
   getters: {
     getUser(): UsersDataType {
-      return JSON.parse(localStorage.getItem("user") || "{}");
+      const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+      if (user) {
+        this.email = user.email;
+        this.roles = user.roles;
+        this.uid = user.uid;
+        this.createdAt = user.createdAt;
+        this.username = user.username;
+        this.updatedAt = user.updatedAt;
+        this.avatar = user.avatar;
+      } else {
+        this.email = "";
+        this.roles = [];
+        this.uid = "";
+        this.createdAt = "";
+        this.username = "";
+        this.updatedAt = "";
+        this.avatar = "";
+      }
+      return user;
     },
   },
 
   actions: {
     setUser(user: UsersDataType) {
-      console.log("user", user);
       this.email = user.email;
       this.roles = user.roles;
       this.uid = user.uid;
@@ -29,6 +46,17 @@ export const useUserStore = defineStore("user", {
       this.updatedAt = user.updatedAt;
       this.avatar = user.avatar;
       localStorage.setItem("user", JSON.stringify(user));
+    },
+
+    removeUser() {
+      this.email = "";
+      this.roles = [];
+      this.uid = "";
+      this.createdAt = "";
+      this.username = "";
+      this.updatedAt = "";
+      this.avatar = "";
+      localStorage.removeItem("user");
     },
   },
 });

@@ -4,7 +4,7 @@ import { deskree } from "@/deskree";
 import type { UsersDataType } from "@/interfaces/deskree-types.interface";
 import { useUserStore } from "@/stores/user";
 import { useTokenStore } from "@/stores/token";
-import { useRouter } from "vue-router";
+import router from "@/router";
 
 const avatarFile = ref<File | null | undefined>(null);
 
@@ -47,9 +47,12 @@ function convertFileToBase64(file: File): Promise<string | ArrayBuffer | null> {
 async function handleRegistration() {
   try {
     isLoading.value = true;
-    await registerUser();
-    await getToken();
-    useRouter().push("/home");
+    const user = await registerUser();
+    const token = await getToken();
+    user["data"]["data"]["uid"] = token.data.uid;
+    useTokenStore().setToken(token.data.idToken, token.data.refreshToken);
+    useUserStore().setUser(user.data.data);
+    router.push({ name: "home" });
   } catch (e) {
     isLoading.value = false;
     console.error(e);
@@ -73,7 +76,7 @@ async function registerUser() {
         username: registerUserObject.value.username,
         avatar: registerUserObject.value.avatar,
       });
-    useUserStore().setUser(user.data.data);
+    return user;
   } catch (e) {
     isLoading.value = false;
     console.error(e);
@@ -90,8 +93,7 @@ async function getToken() {
         registerUserObject.value.email,
         registerUserObject.value.password
       );
-    console.log(token);
-    useTokenStore().setToken(token.data.idToken, token.data.refreshToken);
+    return token;
   } catch (e) {
     isLoading.value = false;
     console.error(e);
@@ -107,7 +109,7 @@ async function getToken() {
     <div
       class="h-screen w-1/4 mobile:w-full mobile:px-4 max-w-md my-36 mx-auto mobile:my-0 mobile:mx-0 mobile:flex mobile:flex-col mobile:justify-center"
     >
-      <div class="flex items-center justify-center gap-2 mb-8">
+      <div class="flex items-center gap-2 mb-8">
         <img src="@/assets/logo.svg" alt="logo" class="w-11" />
         <h4 class="font-sans font-bold text-white text-3xl">rettiwt</h4>
       </div>

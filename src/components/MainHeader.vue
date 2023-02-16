@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from "vue";
+
+import { useUserStore } from "@/stores/user";
+
+const user = computed(() => useUserStore().$state);
+</script>
 
 <template>
   <div class="flex flex-col items-center justify-center">
@@ -16,7 +22,8 @@
 
       <div class="w-48 min-w-fit">
         <button
-          class="bg-primary py-1.5 px-4 rounded-3xl hover:bg-primary-hover transition-colors duration-200 ease-in-out mobile:py-1 mobile:px-2"
+          class="bg-primary py-1.5 px-4 rounded-3xl hover:bg-primary-hover transition-colors duration-200 ease-in-out mobile:py-1 mobile:px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="user === undefined || user === null || user.email === ''"
         >
           Share Tweet
         </button>
