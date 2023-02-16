@@ -3,11 +3,15 @@ import { useTokenStore } from "@/stores/token";
 import { useUserStore } from "@/stores/user";
 import { computed } from "vue";
 
-const user = computed(() => useUserStore().$state);
+let user = computed(() => useUserStore().getUser);
 
 const logout = () => {
   useUserStore().removeUser();
   useTokenStore().removeToken();
+};
+
+const checkForEmptyUser = () => {
+  return user.value.uid === undefined || user.value.uid === null;
 };
 </script>
 
@@ -32,9 +36,6 @@ const logout = () => {
             class="rounded-full w-6 h-6"
           />
           <div class="flex flex-col">
-            <h4 class="font-normal font-sans text-sm text-white">
-              {{ user.username }}
-            </h4>
             <span class="font-normal font-sans text-xxs text-color-tertiary"
             >@{{ user.username }}</span
             >
@@ -123,7 +124,7 @@ const logout = () => {
             </svg>
 
             <RouterLink
-              v-if="user === undefined || user === null || user.email === ''"
+              v-if="checkForEmptyUser()"
               to="/login"
             >
               <span
