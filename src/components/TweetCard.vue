@@ -3,8 +3,10 @@ import dayjs from "dayjs";
 
 const props = defineProps<{
   tweet: {
+    uid: string;
     message: string;
     author: {
+      uid: string;
       username: string;
       email: string;
       avatar: string;
@@ -12,9 +14,9 @@ const props = defineProps<{
       createdAt: string;
       updatedAt: string;
     };
-    factMessage: string;
-    createdAt: string;
-    updatedAt: string;
+    factMessage?: string;
+    createdAt?: string;
+    updatedAt?: string;
   };
 }>();
 
