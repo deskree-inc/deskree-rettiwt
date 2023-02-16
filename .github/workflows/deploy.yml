@@ -8,8 +8,7 @@ on:
 # common public env add inline here
 # common secret can be found in secrets
 env:
-  PROJECT_ID: ${{ secrets.DESKREE_PROJECT_ID }}
-  DOCKER_IMAGE: gcr.io/${{ secrets.DESKREE_PROJECT_ID }}/deskree_rettiwt
+  DOCKER_IMAGE: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/deskree_rettiwt
 
 jobs:
   setup-test-build-deploy:
