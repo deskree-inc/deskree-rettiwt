@@ -1,6 +1,7 @@
 FROM node:18.7.0-alpine3.16 as build-stage
 WORKDIR /app
 COPY package*.json ./
+COPY .env .env
 RUN npm ci
 COPY ./ .
 ARG MODE=production
