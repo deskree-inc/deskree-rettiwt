@@ -5,6 +5,8 @@
     "baseUrl": ".",
     "outDir": "dist",
     "types": ["node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./src/*"]
     },

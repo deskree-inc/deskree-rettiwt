@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { deskree } from "@/deskree";
+import { deskree, options } from "@/deskree";
 import type { UsersDataType } from "@/interfaces/deskree-types.interface";
 import { useUserStore } from "@/stores/user";
 import { useTokenStore } from "@/stores/token";
@@ -71,6 +71,7 @@ async function registerUser() {
         registerUserObject.value.email,
         registerUserObject.value.password
       );
+    options["userToken"] = signup.data.idToken;
     const user: { data: { data: UsersDataType }; status: string } =
       await deskree.database().from("users").update(signup.data.uid, {
         username: registerUserObject.value.username,

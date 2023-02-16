@@ -22,13 +22,21 @@ const logout = () => {
         class="min-h-min w-40 p-4 bg-background-secondary rounded-xl flex flex-col mt-[68px] gap-4"
       >
         <div v-if="user.uid && user.email" class="flex items-center gap-3">
-          <img :src="user.avatar" alt="avatar" class="rounded-full w-6 h-6" />
+          <img
+            :src="
+              user.hasOwnProperty('avatar') && user.avatar !== undefined
+                ? user.avatar
+                : 'https://i.pravatar.cc/32'
+            "
+            alt="avatar"
+            class="rounded-full w-6 h-6"
+          />
           <div class="flex flex-col">
             <h4 class="font-normal font-sans text-sm text-white">
               {{ user.username }}
             </h4>
             <span class="font-normal font-sans text-xxs text-color-tertiary"
-              >@{{ user.username }}</span
+            >@{{ user.username }}</span
             >
           </div>
         </div>
@@ -48,7 +56,7 @@ const logout = () => {
             </svg>
 
             <span class="font-sans font-semibold text-xs pt-0.5 text-primary"
-              >Home</span
+            >Home</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -70,7 +78,7 @@ const logout = () => {
             </svg>
             <span
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-              >Trending</span
+            >Trending</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -93,7 +101,7 @@ const logout = () => {
 
             <span
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-              >Settings</span
+            >Settings</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -120,14 +128,14 @@ const logout = () => {
             >
               <span
                 class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-                >Login</span
+              >Login</span
               >
             </RouterLink>
             <span
               v-else
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
               @click="logout()"
-              >Logout</span
+            >Logout</span
             >
           </nav>
         </div>

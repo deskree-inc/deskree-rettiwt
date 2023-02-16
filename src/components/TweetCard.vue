@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import * as dayjs from 'dayjs'
+
 const props = defineProps<{
   tweet: {
-    id: number;
-    name: string;
-    username: string;
-    avatar: string;
-    time: string;
-    date: string;
     message: string;
-    factCheck: {
-      passed: boolean | null;
-      text: string;
+    author: {
+      username: string;
+      email: string;
+      avatar: string;
+      roles: [];
+      createdAt: string;
+      updatedAt: string;
     };
+    createdAt: string;
+    updatedAt: string;
   };
 }>();
 
@@ -29,25 +31,30 @@ const checkmarkPath = (passed: boolean | null) => {
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
         <img
-          :src="props.tweet.avatar"
+          :src="
+            props.tweet.author.hasOwnProperty('avatar') &&
+            props.tweet.author.avatar.length > 0
+              ? props.tweet.author.avatar
+              : 'https://i.pravatar.cc/32'
+          "
           alt="avatar"
           class="rounded-full w-8 h-8"
         />
         <div class="flex flex-col">
           <h4 class="font-normal font-sans text-xs text-white">
-            {{ props.tweet.username }}
+            {{ props.tweet.author.username }}
           </h4>
           <span class="font-normal font-sans text-xxs text-color-tertiary">{{
-            props.tweet.username
+            props.tweet.author.username
           }}</span>
         </div>
       </div>
       <div class="flex items-center gap-1">
         <span class="font-normal font-sans text-xxs text-color-tertiary">{{
-          props.tweet.time
+            dayjs(props.tweet.createdAt).format("hh:mm a")
         }}</span>
         <span class="font-normal font-sans text-xxs text-color-tertiary">{{
-          props.tweet.date
+            dayjs(props.tweet.createdAt).format("D MMM YY")
         }}</span>
       </div>
     </div>
@@ -59,14 +66,14 @@ const checkmarkPath = (passed: boolean | null) => {
       <div class="flex flex-col gap-1 mt-4">
         <div class="flex items-center gap-2">
           <img
-            :src="checkmarkPath(props.tweet.factCheck.passed)"
+            :src="checkmarkPath(true)"
             alt="Green Checkmark"
           />
           <span
-            v-if="props.tweet.factCheck.passed !== null"
+            v-if="props.tweet.message !== null"
             class="font-semibold font-sans text-xxs text-color-tertiary"
             >Fact Check
-            {{ props.tweet.factCheck.passed ? "Passed" : "Failed" }}</span
+            {{ props.tweet.message !== null ? "Passed" : "Failed" }}</span
           >
           <span
             v-else
@@ -75,7 +82,7 @@ const checkmarkPath = (passed: boolean | null) => {
           </span>
         </div>
         <span class="font-semibold font-sans text-xxs text-color-tertiary">{{
-          props.tweet.factCheck.text
+          props.tweet.message
         }}</span>
       </div>
     </div>

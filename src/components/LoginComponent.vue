@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { deskree } from "@/deskree";
+import { deskree, options } from "@/deskree";
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
 import { useTokenStore } from "@/stores/token";
@@ -18,6 +18,7 @@ async function loginUser() {
     const login = await deskree
       .auth()
       .signInEmail(loginUserObject.value.email, loginUserObject.value.password);
+    options["userToken"] = login.data.idToken;
     const user = await deskree
       .database()
       .from("users")
