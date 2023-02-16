@@ -64,16 +64,13 @@ jobs:
       - name: Create ENV
         uses: SpicyPizza/create-envfile@v1
         with:
-          VITE_APP_DESKREE_PROJECT_ID: ${{ secrets.DESKREE_PROJECT_ID }}
-          VITE_APP_DESKREE_ADMIN_TOKEN: ${{ secrets.DESKREE_ADMIN_TOKEN }}
+          envkey_VITE_APP_DESKREE_PROJECT_ID: ${{ secrets.DESKREE_PROJECT_ID }}
+          envkey_VITE_APP_DESKREE_ADMIN_TOKEN: ${{ secrets.DESKREE_ADMIN_TOKEN }}
           file_name: .env
 
       - name: Build Docker image
         run: |-
-          docker build \
-            -t $DOCKER_IMAGE:$GITHUB_SHA \
-            --build-arg MODE="$MODE" \
-            .
+          docker build -t $DOCKER_IMAGE:$GITHUB_SHA .
 
       - name: Push Docker image
         run: |-
