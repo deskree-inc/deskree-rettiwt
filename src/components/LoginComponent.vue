@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import { deskree, options } from "@/deskree";
-import router from "@/router";
+
 import { useUserStore } from "@/stores/user";
 import { useTokenStore } from "@/stores/token";
+import router from "@/router";
+
+import LoadingWidgetVue from "./LoadingWidget.vue";
 
 const loginUserObject = ref({
   email: "",
@@ -26,7 +30,7 @@ async function loginUser() {
     user["data"]["data"]["uid"] = login.data.uid;
     useUserStore().setUser(user.data.data);
     useTokenStore().setToken(login.data.idToken, login.data.refreshToken);
-    router.push({ name: "home" });
+    router.replace({ name: "home" });
   } catch (e) {
     console.error(e);
     throw e;
@@ -67,9 +71,11 @@ async function loginUser() {
         />
         <button
           type="submit"
-          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out"
+          class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="isLoading"
         >
-          Login
+          <LoadingWidgetVue v-if="isLoading" />
+          <span v-else>Login</span>
         </button>
       </form>
       <div class="w-full h-0.5 my-7 bg-secondary"></div>

@@ -1,43 +1,29 @@
+import { useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 
 export const useTokenStore = defineStore("token", {
   state: () => ({
-    token: "",
-    refreshToken: "",
+    tokens: useStorage("tokens", {
+      token: "",
+      refreshToken: "",
+    }),
   }),
 
   getters: {
-    getToken() {
-      const token = localStorage.getItem("token") || "";
-      if (token !== "") {
-        this.token = token;
-      } else {
-        this.token = "";
-      }
-      return token;
-    },
-    getRefreshToken() {
-      const refreshToken = localStorage.getItem("refreshToken") || "";
-      if (refreshToken !== "") {
-        this.refreshToken = refreshToken;
-      } else {
-        this.refreshToken = "";
-      }
-      return refreshToken;
+    getToken(): { token: string; refreshToken: string } {
+      return this.tokens;
     },
   },
 
   actions: {
     setToken(token: string, refreshToken: string) {
-      this.token = token;
-      this.refreshToken = refreshToken;
-      localStorage.setItem("token", token);
-      localStorage.setItem("refreshToken", refreshToken);
+      this.tokens.token = token;
+      this.tokens.refreshToken = refreshToken;
     },
 
     removeToken() {
-      this.token = "";
-      this.refreshToken = "";
+      this.tokens.token = "";
+      this.tokens.refreshToken = "";
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
     },

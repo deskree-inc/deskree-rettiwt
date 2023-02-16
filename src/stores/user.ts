@@ -1,61 +1,45 @@
+import { useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 import type { UsersDataType } from "../interfaces/deskree-types.interface";
 
 export const useUserStore = defineStore("user", {
-  state: (): UsersDataType => ({
-    email: "",
-    roles: [],
-    uid: "",
-    createdAt: "",
-    username: "",
-    updatedAt: "",
-    avatar: "",
+  state: (): { user: UsersDataType } | any => ({
+    user: useStorage("user", {
+      email: "",
+      roles: [],
+      uid: "",
+      createdAt: "",
+      username: "",
+      updatedAt: "",
+      avatar: "",
+    }),
   }),
 
   getters: {
     getUser(): UsersDataType {
-      const user = JSON.parse(localStorage.getItem("user") ?? "{}");
-      if (user) {
-        this.email = user.email;
-        this.roles = user.roles;
-        this.uid = user.uid;
-        this.createdAt = user.createdAt;
-        this.username = user.username;
-        this.updatedAt = user.updatedAt;
-        this.avatar = user.avatar;
-      } else {
-        this.email = "";
-        this.roles = [];
-        this.uid = "";
-        this.createdAt = "";
-        this.username = "";
-        this.updatedAt = "";
-        this.avatar = "";
-      }
-      return user;
+      return this.user;
     },
   },
 
   actions: {
     setUser(user: UsersDataType) {
-      this.email = user.email;
-      this.roles = user.roles;
-      this.uid = user.uid;
-      this.createdAt = user.createdAt;
-      this.username = user.username;
-      this.updatedAt = user.updatedAt;
-      this.avatar = user.avatar;
-      localStorage.setItem("user", JSON.stringify(user));
+      this.user.email = user.email;
+      this.user.roles = user.roles;
+      this.user.uid = user.uid;
+      this.user.createdAt = user.createdAt;
+      this.user.username = user.username;
+      this.user.updatedAt = user.updatedAt;
+      this.user.avatar = user.avatar;
     },
 
     removeUser() {
-      this.email = "";
-      this.roles = [];
-      this.uid = "";
-      this.createdAt = "";
-      this.username = "";
-      this.updatedAt = "";
-      this.avatar = "";
+      this.user.email = "";
+      this.user.roles = [];
+      this.user.uid = "";
+      this.user.createdAt = "";
+      this.user.username = "";
+      this.user.updatedAt = "";
+      this.user.avatar = "";
       localStorage.removeItem("user");
     },
   },

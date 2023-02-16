@@ -5,6 +5,7 @@ import type { UsersDataType } from "@/interfaces/deskree-types.interface";
 import { useUserStore } from "@/stores/user";
 import { useTokenStore } from "@/stores/token";
 import router from "@/router";
+import LoadingWidget from "./LoadingWidget.vue";
 
 const avatarFile = ref<File | null | undefined>(null);
 
@@ -52,7 +53,7 @@ async function handleRegistration() {
     user["data"]["data"]["uid"] = token.data.uid;
     useTokenStore().setToken(token.data.idToken, token.data.refreshToken);
     useUserStore().setUser(user.data.data);
-    router.push({ name: "home" });
+    router.replace({ name: "home" });
   } catch (e) {
     isLoading.value = false;
     console.error(e);
@@ -207,7 +208,8 @@ async function getToken() {
           class="flex justify-center items-start w-full relative gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-1 focus:ring-white transition-colors duration-200 ease-in-out disabled:opacity-50 disabled:hover:transparent"
           :disabled="isLoading"
         >
-          Register
+          <LoadingWidget v-if="isLoading" />
+          <span v-else>Register</span>
         </button>
       </form>
       <!--Divider-->

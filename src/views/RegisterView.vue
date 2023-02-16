@@ -3,5 +3,7 @@ import RegisterComponent from "@/components/RegisterComponent.vue";
 </script>
 
 <template>
-  <RegisterComponent />
+  <div>
+    <RegisterComponent />
+  </div>
 </template>

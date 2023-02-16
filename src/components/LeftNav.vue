@@ -3,16 +3,16 @@ import { useTokenStore } from "@/stores/token";
 import { useUserStore } from "@/stores/user";
 import { computed } from "vue";
 
-let user = computed(() => useUserStore().getUser);
+const user = computed(() => useUserStore().getUser);
 
 const logout = () => {
   useUserStore().removeUser();
   useTokenStore().removeToken();
 };
 
-const checkForEmptyUser = () => {
-  return user.value.uid === undefined || user.value.uid === null;
-};
+const checkForEmptyUser = computed(() => {
+  return user.value.uid === "" || user.value.uid === null;
+});
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const checkForEmptyUser = () => {
           />
           <div class="flex flex-col">
             <span class="font-normal font-sans text-xxs text-color-tertiary"
-            >@{{ user.username }}</span
+              >@{{ user.username }}</span
             >
           </div>
         </div>
@@ -57,7 +57,7 @@ const checkForEmptyUser = () => {
             </svg>
 
             <span class="font-sans font-semibold text-xs pt-0.5 text-primary"
-            >Home</span
+              >Home</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -79,7 +79,7 @@ const checkForEmptyUser = () => {
             </svg>
             <span
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-            >Trending</span
+              >Trending</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -102,7 +102,7 @@ const checkForEmptyUser = () => {
 
             <span
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-            >Settings</span
+              >Settings</span
             >
           </nav>
           <div class="bg-small-divider w-full h-0.5"></div>
@@ -123,20 +123,17 @@ const checkForEmptyUser = () => {
               />
             </svg>
 
-            <RouterLink
-              v-if="checkForEmptyUser()"
-              to="/login"
-            >
+            <RouterLink v-if="checkForEmptyUser" to="/login">
               <span
                 class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
-              >Login</span
+                >Login</span
               >
             </RouterLink>
             <span
               v-else
               class="font-sans font-semibold text-xs pt-0.5 text-white group-hover:text-primary transition-colors duration-200 ease-in-out"
               @click="logout()"
-            >Logout</span
+              >Logout</span
             >
           </nav>
         </div>
